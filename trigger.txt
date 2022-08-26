@@ -1,0 +1,95 @@
+trigger name=stu
+table=Student
+time=After
+Event=Insert
+
+Begin
+insert into Enrolled values(new.snum,'Math 101');
+END
+
+
+
+trigger name=math101
+table=Enrolled
+time=Before
+Event=Delete
+
+BEGIN
+IF old.cname ='Math 101' THEN SIGNAL SQLSTATE '45088' set MESSAGE_TEXT=" Math 101 can not be dropped";
+END IF;
+END
+
+
+
+
+
+trigger name=math101
+table=Enrolled
+time=Before
+Event=Insert
+
+BEGIN
+DECLARE	a INT
+SET a = (SELECT COUNT(DISTINCT snum) FROM Enrolled WHERE cname= new cname);
+IF a >= 30 and new.cname <> 'Math101'
+THEN
+SIGNAL
+SQLSTATE '45088' set MESSAGE_TEXT = 'cannot Exceed 30 students ';
+end if;
+END
+
+
+
+trigger name=threec
+table=Class
+time=After
+Event=Insert
+begin
+DECLARE a int;
+DECLARE b int;
+set a=(select COUNT(*) from Class where fid=new.fid);
+set b=(select deptid from Faculty where fid=new.fid);
+if a > 3 AND b!=33
+THEN
+SIGNAL
+SQLSTATE '45088' set MESSAGE_TEXT='teacher cannot take more than 3 courses in the department';
+end IF;
+END
+
+
+
+
+
+trigger name=majorcs
+table=Student
+time=After
+Event=Insert
+
+BEGIN
+declare a int;
+DECLARE b int;
+set a=(select COUNT(*) from Student where major ='Computer Science');
+set b= (select COUNT(*) from Student where major ='Math');
+if b>a 
+THEN
+SIGNAL
+SQLSTATE '45088' set MESSAGE_TEXT='Math major can not be taken';
+end if;
+END
+
+
+
+trigger name=department
+table=Faculty
+time=After
+Event=Insert
+
+BEGIN
+DECLARE a int;
+set a=(select COUNT(*) from Faculty where deptid =new.deptid);
+if a >10
+THEN SIGNAL
+SQLSTATE '45088' SET MESSAGE_TEXT='Maximum limit(10) of faculty is reached in this department ';
+end if;
+END
+
