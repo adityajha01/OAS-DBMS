@@ -1,0 +1,51 @@
+CREATE table Student (
+    snum int(25) not null,
+    sname Varchar(45) not null,
+    major varchar(45) not null,
+    level varchar(45) not null,
+    age int(5) not null,
+    PRIMARY KEY (snum) 
+) 
+ 
+ 
+create table Faculty(
+fid int(25) not null,
+fname varchar(45) not null,
+deptid int(25) not null,
+primary key (fid)
+ 
+)
+ 
+CREATE table Class (
+    name Varchar(45) not null,
+    meets_at varchar(45) not null,
+    room varchar(45) not null,
+    fid int(25) not null,
+    PRIMARY KEY (name), 
+    INDEX f_id (fid),
+    FOREIGN KEY (fid)
+        REFERENCES Faculty(fid)
+        ON DELETE CASCADE
+        on update cascade
+) 
+ 
+CREATE table Enrolled (
+    snum int(25) not null,
+    cname varchar(45) not null,
+    INDEX s_num (snum),
+    INDEX c_name (cname),
+    FOREIGN KEY (snum)
+        REFERENCES Student(snum)
+        ON DELETE CASCADE
+        on update cascade,
+        FOREIGN KEY (cname)
+        REFERENCES Class(name)
+        ON DELETE CASCADE
+        on update cascade
+)
+
+
+
+
+
+

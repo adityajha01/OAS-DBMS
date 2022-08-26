@@ -1,0 +1,77 @@
+﻿1.a          SELECT DISTINCT S.Sname
+FROM Student S, Class C, Enrolled E, Faculty F
+WHERE S.snum = E.snum AND E.cname = C.name AND C.fid = F.fid AND
+F.fname =  "James Smith" AND S.level = "JR"
+
+
+1.b           SELECT MAX(S.age)
+FROM Student S
+WHERE (S.major = "History")
+OR S.snum IN (SELECT E.snum
+FROM Class C, Enrolled E, Faculty F
+WHERE E.cname = C.name AND C.fid = F.fid
+AND F.fname = "James Smith" )
+
+
+1.c        SELECT C.name
+FROM Class C
+WHERE C.room = "R128"
+OR C.name IN (SELECT E.cname
+FROM Enrolled E
+GROUP BY E.cname
+HAVING COUNT(*) >= 5)
+
+
+1.d      SELECT DISTINCT S.sname
+FROM Student S
+WHERE S.snum IN (SELECT E1.snum
+FROM Enrolled E1, Enrolled E2, Class C1, Class C2
+WHERE E1.snum = E2.snum AND E1.cname <> E2.cname
+AND E1.cname = C1.name
+AND E2.cname = C2.name AND C1.meets_at = C2.meets_at)
+
+
+1.e    SELECT DISTINCT F.fname
+FROM Faculty F
+WHERE NOT EXISTS (( SELECT *
+FROM Class C )
+EXCEPT
+(SELECT C1.room
+FROM Class C1
+WHERE C1.fid = F.fid ))>5
+
+
+1.f  select F.fname
+from Faculty F
+where (select count(E.snum)
+from Class C, Enrolled E
+where C.name=E.cname
+and C.fid=F.fid)
+
+
+1.g  SELECT S.level, AVG(S.age)
+FROM Student S
+GROUP BY S.level
+
+
+1.h   SELECT S.level, AVG(S.age)
+FROM Student S
+WHERE S.level <> "JR"
+GROUP BY S.level
+
+
+1.i  SELECT F.fname,count(*) as CourseCount
+FROM Faculty F,Class C
+WHERE F.fid=C.fid
+GROUP BY F.fid,F.fname
+HAVING all(C.room="R128")
+
+
+1.j 
+
+
+1.k   select S.sname
+from Student S
+where S.snum not in(select E.snum
+from Enrolled E
+where S.snum=E.snum);

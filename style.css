@@ -1,0 +1,29 @@
+body{   
+     background-image: url('samp.jpg');  
+}  
+#frm{  
+    border: solid gray 1px;  
+    width:15%;  
+    border-radius: 2px;  
+    margin: 120px auto;  
+    background: #87CEEB;  
+    padding: 50px;  
+}  
+#btn{  
+    color: #FFFFE0;  
+    background: #8B0000;  
+    padding: 7px;  
+    margin-left:30%;  
+} 
+#btn1{  
+    color: #FFFFE0;  
+    background: #8B0000;  
+    padding: 7px;  
+    margin-left: 30%;  
+}
+#btn2{  
+    color: #FFFFE0;  
+    background: #8B0000;  
+    padding: 7px;  
+    margin-left: 30%;  
+}     
